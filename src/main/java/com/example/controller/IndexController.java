@@ -8,6 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -17,7 +19,7 @@ public class IndexController {
     @Autowired
     private PeopleService peopleService;
 
-    @RequestMapping({"/index"})
+    @RequestMapping(value = "/index")
     public String getIndex(ModelMap map){
         List<People> peopleList = peopleService.list();
         map.put("list",peopleList);
@@ -25,7 +27,8 @@ public class IndexController {
         return "page/index";
     }
 
-    @RequestMapping({"/remove"})
+    @ResponseBody
+    @RequestMapping(value ="/remove",method= RequestMethod.POST)
     public String list(@RequestBody JSONObject params){
         Long id = params.getLong("id");
         if(peopleService.remove(id)){

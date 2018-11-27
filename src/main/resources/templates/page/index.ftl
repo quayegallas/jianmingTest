@@ -10,14 +10,33 @@
 <style>
     .head{
         font-size: 50px;
+        width: 500px;
     }
     tr{
         width: auto;
+    }
+    .delete:hover{
+        color: blue;
+    }
+    .new{
+        width: 75px;
+        height: 30px;
+        background: #458B74;
+        border-radius: 10px;
+        float:right;
+    }
+    .new span{
+        font-size: 15px;
+        float: right;
+        color: white;
     }
 </style>
 <body>
     <div class="head">
         通讯录管理系统
+        <div class="new">
+            <span>新增</span>
+        </div>
     </div>
     <table border="1">
         <tr>
@@ -43,6 +62,16 @@
 </html>
 <script>
     function delPeople(id) {
-
+        $.ajax({
+            type:"POST",
+            url:"http://10.10.10.32:8080/remove",
+            data:{
+                id: id
+            },
+            dataType:"jsonp",
+            success:function (data) {
+                alert(data);
+            }
+        })
     }
 </script>
