@@ -22,7 +22,15 @@
         width: 400px;
     }
     .search input{
-        width: 100%;
+        width: 80%;
+    }
+    .search div{
+        position: absolute;
+        left: 370px;
+        margin-top: -23px;
+    }
+    .search div:hover{
+        color: blue;
     }
     .model{
         border: 1px solid #000;
@@ -49,6 +57,7 @@
     </div>
     <div class="search">
         <input placeholder = "请输入你要搜索的人名或者电话号码"/>
+        <div>查询</div>
     </div>
     <div class="model">
         <div><span>姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名</span><input id = "inputName"/></div>
@@ -56,7 +65,7 @@
         <div><span>电话号码</span><input id = "inputNum"/></div>
         <div><span>电子邮箱</span><input id = "inputEmail"/></div>
         <div class="divButton" id="save">保存</div>
-        <div class="divButton" id="close">关闭</div>
+        <div class="divButton" id="close" onclick="noDate(this)">清空</div>
     </div>
     <table border="1">
         <tr>
@@ -68,13 +77,13 @@
         </tr>
         <#list list as data>
             <tr>
-                <td>${data.name}</td>
-                <td>${data.workUnit}</td>
-                <td>${data.phoneNum}</td>
-                <td>${data.email}</td>
+                <td id = "dataName">${data.name}</td>
+                <td id = "dataWork">${data.workUnit}</td>
+                <td id = "dataNum">${data.phoneNum}</td>
+                <td id = "dataEamil">${data.email}</td>
                 <td>
                     <div class="delete" onclick="delPeople(${data.id})">删除</div>
-                    <div class="delete" onclick="upadtePeople(${data.id})">修改</div>
+                    <div class="delete" onclick="getData(this,${data.id})">修改</div>
                 </td>
             </tr>
         </#list>
@@ -94,5 +103,21 @@
                 alert(data);
             }
         })
+    }
+    function getData(e,id) {
+        var data = $(e).parent().parent();
+        $("#inputName").val(data.find("#dataName").html());
+        $("#inputWork").val(data.find("#dataWork").html());
+        $("#inputNum").val(data.find("#dataNum").html());
+        $("#inputEmail").val(data.find("#dataEamil").html());
+        $(".model").attr("value",id);
+    }
+    function noDate(e) {
+        var model = $(e).parent();
+        model.removeAttr("value");
+        $("#inputName").val("");
+        $("#inputWork").val("");
+        $("#inputNum").val("");
+        $("#inputEmail").val("");
     }
 </script>
