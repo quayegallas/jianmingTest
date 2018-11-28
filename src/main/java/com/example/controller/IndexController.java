@@ -29,11 +29,36 @@ public class IndexController {
 
     @ResponseBody
     @RequestMapping(value ="/remove",method= RequestMethod.POST)
-    public String list(@RequestBody JSONObject params){
+    public String remove(@RequestBody JSONObject params){
         Long id = params.getLong("id");
         if(peopleService.remove(id)){
             return "删除成功";
         }
         return "删除失败";
+    }
+
+    @ResponseBody
+    @RequestMapping(value ="/list",method= RequestMethod.POST)
+    public List<JSONObject> list(@RequestBody JSONObject params){
+        String keyword = params.getString("keyword");
+        List<JSONObject> peopleList = peopleService.listByKeyword(keyword);
+
+        return peopleList;
+    }
+
+    @ResponseBody
+    @RequestMapping(value ="/save",method= RequestMethod.POST)
+    public String save(@RequestBody JSONObject params){
+        peopleService.save(params);
+
+        return "保存成功";
+    }
+
+    @ResponseBody
+    @RequestMapping(value ="/update",method= RequestMethod.POST)
+    public String update(@RequestBody JSONObject params){
+        peopleService.update(params);
+
+        return "保存成功";
     }
 }

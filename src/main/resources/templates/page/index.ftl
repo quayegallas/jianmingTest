@@ -18,25 +18,45 @@
     .delete:hover{
         color: blue;
     }
-    .new{
-        width: 75px;
-        height: 30px;
-        background: #458B74;
-        border-radius: 10px;
-        float:right;
+    .search{
+        width: 400px;
     }
-    .new span{
-        font-size: 15px;
-        float: right;
-        color: white;
+    .search input{
+        width: 100%;
+    }
+    .model{
+        border: 1px solid #000;
+        width: 250px;
+        position: absolute;
+        left: 700px;
+    }
+    .model+div{
+        width: 100%;
+    }
+    .model div div{
+        border: 1px solid #000000;
+        width: 50px;
+    }
+    #close{
+        position: absolute;
+        margin-top: -21px;
+        left: 200px;
     }
 </style>
 <body>
     <div class="head">
         通讯录管理系统
-        <div class="new">
-            <span>新增</span>
-        </div>
+    </div>
+    <div class="search">
+        <input placeholder = "请输入你要搜索的人名或者电话号码"/>
+    </div>
+    <div class="model">
+        <div><span>姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名</span><input id = "inputName"/></div>
+        <div><span>工作单位</span><input id = "inputWork"/></div>
+        <div><span>电话号码</span><input id = "inputNum"/></div>
+        <div><span>电子邮箱</span><input id = "inputEmail"/></div>
+        <div class="divButton" id="save">保存</div>
+        <div class="divButton" id="close">关闭</div>
     </div>
     <table border="1">
         <tr>
@@ -54,6 +74,7 @@
                 <td>${data.email}</td>
                 <td>
                     <div class="delete" onclick="delPeople(${data.id})">删除</div>
+                    <div class="delete" onclick="upadtePeople(${data.id})">修改</div>
                 </td>
             </tr>
         </#list>

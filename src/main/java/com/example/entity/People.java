@@ -1,5 +1,7 @@
 package com.example.entity;
 
+import com.alibaba.fastjson.JSONObject;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -13,6 +15,21 @@ public class People  implements Serializable {
     private String workUnit;
     private String phoneNum;
     private String email;
+
+    public People (){
+
+    }
+
+    public People(JSONObject params) {
+        String name = params.getString("name");
+        String phoneNum = params.getString("phoneNum");
+        String workUnit = params.getString("workUnit");
+        String email = params.getString("email");
+        this.name = name;
+        this.phoneNum = phoneNum;
+        this.workUnit = workUnit;
+        this.email = email;
+    }
 
     public Long getId() {
         return id;
@@ -52,5 +69,16 @@ public class People  implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public JSONObject toJson(){
+        JSONObject result = new JSONObject();
+        result.put("id",this.id);
+        result.put("name",this.name);
+        result.put("workUnit",this.workUnit);
+        result.put("phoneNum",this.phoneNum);
+        result.put("email",this.email);
+
+        return result;
     }
 }
