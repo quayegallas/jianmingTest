@@ -22,7 +22,7 @@ public class PeopleService {
     }
 
     public boolean remove(Long id) {
-        peopleDao.deleteById(id.toString());
+        peopleDao.deleteById(id);
 
         return true;
     }

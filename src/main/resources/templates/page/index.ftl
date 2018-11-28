@@ -56,18 +56,18 @@
         通讯录管理系统
     </div>
     <div class="search">
-        <input placeholder = "请输入你要搜索的人名或者电话号码"/>
-        <div>查询</div>
+        <input id = "searchInput" placeholder = "请输入你要搜索的人名或者电话号码"/>
+        <div onclick="list()">查询</div>
     </div>
     <div class="model">
         <div><span>姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名</span><input id = "inputName"/></div>
         <div><span>工作单位</span><input id = "inputWork"/></div>
         <div><span>电话号码</span><input id = "inputNum"/></div>
         <div><span>电子邮箱</span><input id = "inputEmail"/></div>
-        <div class="divButton" id="save">保存</div>
+        <div class="divButton" id="save" onclick="save()">保存</div>
         <div class="divButton" id="close" onclick="noDate(this)">清空</div>
     </div>
-    <table border="1">
+    <table id="mainData"border="1">
         <tr>
             <th>姓名</th>
             <th>工作单位</th>
@@ -82,7 +82,7 @@
                 <td id = "dataNum">${data.phoneNum}</td>
                 <td id = "dataEamil">${data.email}</td>
                 <td>
-                    <div class="delete" onclick="delPeople(${data.id})">删除</div>
+                    <div class="delete" onclick="delPeople(this,${data.id})">删除</div>
                     <div class="delete" onclick="getData(this,${data.id})">修改</div>
                 </td>
             </tr>
@@ -91,18 +91,21 @@
 </body>
 </html>
 <script>
-    function delPeople(id) {
+    function delPeople(e,id) {
+        var params = {
+            "id":id
+        }
         $.ajax({
-            type:"POST",
-            url:"http://10.10.10.32:8080/remove",
-            data:{
-                id: id
-            },
-            dataType:"jsonp",
-            success:function (data) {
-                alert(data);
+            url: "http://localhost:8080/remove",
+            type:"POST",//请求方式POST
+            data:JSON.stringify(params),
+            dataType:"json", //预期从服务器中接受的数据类型
+            contentType: 'application/json; charset=UTF-8',
+            success:function(data){
+                alert("success");
             }
-        })
+        });
+        $(e).parent().parent().remove();
     }
     function getData(e,id) {
         var data = $(e).parent().parent();
@@ -119,5 +122,76 @@
         $("#inputWork").val("");
         $("#inputNum").val("");
         $("#inputEmail").val("");
+    }
+    function save() {
+        var id = $(".model").attr("value");
+        var params = {
+            "id":id,
+            "name":$("#inputName").val(),
+            "workUnit":$("#inputWork").val(),
+            "phoneNum":$("#inputNum").val(),
+            "email":$("#inputEmail").val(),
+        }
+        if(id==""){
+                $.ajax({
+                    url: "http://localhost:8080/save",
+                    type:"POST",//请求方式POST
+                    data:JSON.stringify(params),
+                    dataType:"json", //预期从服务器中接受的数据类型
+                    contentType: 'application/json; charset=UTF-8',
+                    success:function(data){
+                        alert("success");
+                    }
+                });
+        }else{
+            $.ajax({
+                url: "http://localhost:8080/update",
+                type:"POST",//请求方式POST
+                data:JSON.stringify(params),
+                dataType:"json", //预期从服务器中接受的数据类型
+                contentType: 'application/json; charset=UTF-8',
+                success:function(data){
+                    alert("success");
+                }
+            });
+        }
+        alert("操作成功");
+        location.reload();
+    }
+    function list() {
+        var keyword = $("#searchInput").val();
+        var params = {
+            "keyword":keyword
+        }
+        $.ajax({
+            url: "http://localhost:8080/list",
+            type:"POST",//请求方式POST
+            data:JSON.stringify(params),
+            dataType:"json", //预期从服务器中接受的数据类型
+            contentType: 'application/json; charset=UTF-8',
+            success:function(data){
+                var html = "        <tr>" +
+                        "            <th>姓名</th>" +
+                        "            <th>工作单位</th>" +
+                        "            <th>电话号码</th>" +
+                        "            <th>电子邮箱</th>" +
+                        "            <th>操作</th>" +
+                        "        </tr>";
+                for(var i=0;i<data.length;i++){
+                    var datahtml = "<tr>" +
+                            "                <td id='dataName'>"+data[i].name+"</td>" +
+                            "                <td id='dataWork'>"+data[i].workUnit+"</td>" +
+                            "                <td id='dataNum'>"+data[i].phoneNum+"</td>" +
+                            "                <td id='dataEamil'>"+data[i].email+"</td>" +
+                            "                <td>" +
+                            "                    <div class='delete' onclick='delPeople("+data[i].id+")'>删除</div>" +
+                            "                    <div class='delete' onclick='getData(this,"+data[i].id+")'>修改</div>" +
+                            "                </td>" +
+                            "            </tr>"
+                    html = html +datahtml;
+                }
+                $("#mainData").html(html);
+            }
+        });
     }
 </script>

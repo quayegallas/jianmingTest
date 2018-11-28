@@ -28,7 +28,7 @@ public class IndexController {
     }
 
     @ResponseBody
-    @RequestMapping(value ="/remove",method= RequestMethod.POST)
+    @RequestMapping(value ="/remove",method= RequestMethod.POST,produces="application/json;charset=UTF-8")
     public String remove(@RequestBody JSONObject params){
         Long id = params.getLong("id");
         if(peopleService.remove(id)){
