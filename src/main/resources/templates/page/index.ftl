@@ -132,7 +132,7 @@
             "phoneNum":$("#inputNum").val(),
             "email":$("#inputEmail").val(),
         }
-        if(id==""){
+        if(typeof(id)=="undefined"){
                 $.ajax({
                     url: "http://localhost:8080/save",
                     type:"POST",//请求方式POST
